@@ -34,4 +34,4 @@ df = df.withColumn('follower_count', f.regexp_replace("follower_count", "k", "00
 df = df.withColumn('follower_count', f.regexp_replace("follower_count", "M", "000000"))
 df = df.withColumn('follower_count', f.col("follower_count").cast("Int"))
 df = df.withColumn('tag_list', f.regexp_replace("tag_list", "N,o, ,T,a,g,s, ,A,v,a,i,l,a,b,l,e", "None"))
-df = df.sort("category").show() #show dataframe 
+df = df.sort("category").show() #shows dataframe 

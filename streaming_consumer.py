@@ -28,13 +28,14 @@ data_df = spark \
 
 
 def foreach_batch_function(df, epoch_id):
+    #trnaformations performed on each micro-batch of data to clean, process and compute features in real-time
     df = df.withColumn('follower_count', f.regexp_replace("follower_count", "User Info Error", "0"))
     df = df.withColumn('follower_count', f.regexp_replace("follower_count", "k", "000"))
     df = df.withColumn('follower_count', f.regexp_replace("follower_count", "M", "000000"))
     df = df.withColumn('follower_count', f.col("follower_count").cast("Int"))
     df = df.withColumn('tag_list', f.regexp_replace("tag_list", "N,o, ,T,a,g,s, ,A,v,a,i,l,a,b,l,e", "None"))
-    maxValueA = df.agg(max("follower_count")).collect()[0][0]
-    #df.select(("*")).write.format("console").mode("append").save()
+    maxValueA = df.agg(max("follower_count")).collect()[0][0] #computes the maximum follower count of the users at any given time
+    # Writes data to PostgreSQL database for post-processing and querying
     df.write \
         .format("jdbc") \
         .mode("append")   \
@@ -44,7 +45,6 @@ def foreach_batch_function(df, epoch_id):
         .option("password", password) \
         .option("driver", "org.postgresql.Driver") \
         .save()
-    #print(f"{maxValueA} is max follower count")
     
 schema = StructType([
         StructField("category",StringType(),True),
@@ -61,9 +61,6 @@ schema = StructType([
     ])
 
 
-#data_df.select(data_df("value"))
-#data_df.writeStream.foreachBatch(foreach_batch_function).start().awaitTermination()
 data_df = data_df.selectExpr("CAST (value as STRING)")
 data_df = data_df.withColumn("value",from_json(col("value"),schema)).select(col("value.*")) 
-#data_df.writeStream.format("console").outputMode("update").start().awaitTermination()
 data_df.writeStream.foreachBatch(foreach_batch_function).start().awaitTermination()
