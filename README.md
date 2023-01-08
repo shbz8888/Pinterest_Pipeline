@@ -9,7 +9,7 @@ Batch data was extracted from S3 and transformed in Spark using Airflow to orche
 
 **Navigation**:
 
-**Project_pin_API**: An API that Receives requests from a user emulation script - a Kafka producer that sends data to the Kafka topic
+**Project_pin_API**: An API that Receives requests from a user emulation script - with an integrated Kafka producer that sends data to a Kafka topic
 
 **batch_consumer**: Consumes data from the Kafka topic and sends it to AWS S3
 
