@@ -5,6 +5,7 @@ from pyspark.sql.functions import col,from_json,max,min
 import os
 import pyspark.sql.functions as f
 from json import loads
+#Maven repository address to ensure prerequisites for PySpark
 os.environ["PYSPARK_SUBMIT_ARGS"] = '--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.3,org.postgresql:postgresql:42.5.0 streaming_consumer.py pyspark-shell'
 password = os.environ["PGADMIN4_PASSWORD"]
 kafka_topic_name = "MyFirstKafkaTopic"
