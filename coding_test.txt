@@ -1,0 +1,85 @@
+General test:
+1.
+#final
+def fibonacci(num):
+    n1,n2=0,1
+    while n1<=num:
+        yield n1
+        n1,n2 = n2,n1+n2
+
+def sum_of_even_fib(num):
+    even_sum = 0 
+    count = 0
+    for number in fibonacci(num):
+        if number % 2 ==0:
+            even_sum += number
+            count += 1
+        if count == 100:
+            break
+    return even_sum
+
+print(sum_of_even_fib(4000000))
+#final
+
+2.
+#final
+def common_member(a, b):
+    a_set = set(a)
+    b_set = set(b)
+ 
+    if (a_set & b_set):
+        print(a_set & b_set)
+        return list(a_set & b_set)
+    else:
+        print("No common elements")
+
+a = [1, 2, 3, 4, 5]
+b = [6, 1, 3, 5]
+common_member(a, b)
+#final
+
+3.
+#final
+def has_only_even_digits(num):
+    for increment in str(num):
+        if int(increment) % 2 != 0:
+            return False
+    return True
+
+print(has_only_even_digits(2468)) # True
+print(has_only_even_digits(1357)) # False
+#final
+
+4. 
+#final
+def calculate_iter_sum(val):
+    total = 0
+    for i in range(1, 5):
+        total += int(str(val) * i)
+    return total
+
+print(calculate_iter_sum(9)) # 9 + 99 + 999 + 9999 = 11106
+#final
+
+Python Test:
+
+1.
+def num_gen(val,n):
+    for i in range(1,val+1):
+        if i%n == 0:
+            yield i
+
+sum(num_gen(102030,3))
+
+2.
+def f(n):
+    result = []
+    for i in range(n+1):
+        result.append([j for j in range(1, i+1)])
+    return result
+
+def list_maker(n):
+    for i in range(n+1):
+        print(f(i))
+
+list_maker(3)
