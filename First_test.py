@@ -73,3 +73,15 @@ def test_function():
 def test_function_2():
     c = list_check(screen_output)
     assert c == 4
+
+def test_dict_value_present():
+    list_of_dicts = read_data(screen_output)
+    for d in list_of_dicts:
+        if d['Interface'] != '':
+            return True
+    return False
+
+def test_value_present():
+    list_of_dicts = read_data(screen_output)
+    assert test_dict_value_present() == False
+    
