@@ -28,19 +28,19 @@ sw0.4004        4.4.0.1/24                        u/D  -/-
 
 def read_data(screen_output):
     lines=screen_output.split("\n")
-    #extract=re.compile(r"././")
     list_of_dicts=[]
     dict={}
     for idx,line in enumerate(lines[5:-1]):
-        #print(line[0:8].strip(" "))
         n=list(re.split(r'\s+',line))
         list_of_dicts.append({"Interface":line[0:8].strip(" ")})
-        if line[0:8] == '':
-            list_of_dicts[idx-1].append({"IP Adress(es)":n[1]})
+        if line[0:8] == '        ' and list_of_dicts[idx-1]["Interface"] != '' : 
+            list_of_dicts[idx-1]["IP Adress(es)"]+= ', '+n[1]   #Appends interface value to previous dictionary
+        elif line[0:8] == '        ' and list_of_dicts[idx-1]["Interface"] == '':
+            list_of_dicts[idx-2]["IP Adress(es)"]+= ', '+n[1]   #Appends interface value to dictionary two places behind
         try:
-            list_of_dicts[idx].update({"IP Adress(es)":n[1]})
+            list_of_dicts[idx].update({"IP Adress(es)":n[1]})   #Trys to add a value to the dictionary
         except:
-            list_of_dicts[idx].update({"IP Adress(es)":' '}) 
+            list_of_dicts[idx].update({"IP Adress(es)":' '})    #If it doesn't exist a blank space is added
         try:
             list_of_dicts[idx].update({"S/L":n[2]})
         except:
@@ -49,39 +49,28 @@ def read_data(screen_output):
             list_of_dicts[idx].update({"Speed/Duplex":n[3]})
         except:
             list_of_dicts[idx].update({"Speed/Duplex":''})
-            #v=re.search(r'[ADu]{1}\/[ADu]{1}',line)
-            #b=re.match(r'\S*\/*',line)
-            #n=re.split(r'\s+',line)
-        
-    #print(list_of_dicts)
+          
     return list_of_dicts
 
+def remove_faulty_dicts(screen_output): #Removes empty dictionaries
+    Final_list=read_data(screen_output)
+    for d in Final_list:
+        if d.get('S/L') == '' or d.get('Interface') == '':
+            Final_list.remove(d)
+    print(Final_list)
+
 def list_check(screen_output):
-    list_of_dicts=read_data(screen_output)
-    c=0
-    for d in list_of_dicts:
+    Initial_list=read_data(screen_output)
+    for d in Initial_list:
         if d['Interface']=='':
-            c+=1
-        else:
-            pass
-    return c
+            return False
+    return True   
 
-
-def test_function():
+def test_function():    #Checks that the regex statement has cut the lines correctly
     assert len(read_data(screen_output)) == 20
 
-def test_function_2():
-    c = list_check(screen_output)
-    assert c == 4
+def Dictionary_value_checker():  #Checks if the final list contains any dictionaries with empty values, unfortunately it does
+    assert list_check(screen_output) == False
 
-def test_dict_value_present():
-    list_of_dicts = read_data(screen_output)
-    for d in list_of_dicts:
-        if d['Interface'] != '':
-            return True
-    return False
-
-def test_value_present():
-    list_of_dicts = read_data(screen_output)
-    assert test_dict_value_present() == False
+remove_faulty_dicts(screen_output)
     
