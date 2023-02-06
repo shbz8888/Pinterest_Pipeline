@@ -49,28 +49,27 @@ def read_data(screen_output):
             list_of_dicts[idx].update({"Speed/Duplex":n[3]})
         except:
             list_of_dicts[idx].update({"Speed/Duplex":''})
-          
-    return list_of_dicts
+    Final_list = [x for x in list_of_dicts if not ('' == x.get('Interface'))]    
+    return list_of_dicts,Final_list
 
-def remove_faulty_dicts(screen_output): #Removes empty dictionaries
-    Final_list=read_data(screen_output)
+
+
+def list_check(screen_output):  #Will be used in tests below
+    Initial_list, Final_list=read_data(screen_output)
     for d in Final_list:
-        if d.get('S/L') == '' or d.get('Interface') == '':
-            Final_list.remove(d)
-    print(Final_list)
-
-def list_check(screen_output):
-    Initial_list=read_data(screen_output)
-    for d in Initial_list:
         if d['Interface']=='':
-            return False
-    return True   
+            return True
+    return False  
 
 def test_function():    #Checks that the regex statement has cut the lines correctly
-    assert len(read_data(screen_output)) == 20
+    list_of_dicts, Final_list=read_data(screen_output)
+    assert len(list_of_dicts) == 20
 
-def Dictionary_value_checker():  #Checks if the final list contains any dictionaries with empty values, unfortunately it does
+def test_Dictionary_value_checker():  #Checks if the final list contains any dictionaries with empty values
     assert list_check(screen_output) == False
 
-remove_faulty_dicts(screen_output)
+list_of_dicts, Final_list=read_data(screen_output)
+print(Final_list)
+
+
     
