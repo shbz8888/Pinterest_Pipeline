@@ -61,12 +61,18 @@ def list_check(screen_output):  #Will be used in tests below
             return True
     return False  
 
-def test_function():    #Checks that the regex statement has cut the lines correctly
+
+def test_regex():    #Checks that the regex statement has cut the lines correctly
     list_of_dicts, Final_list=read_data(screen_output)
     assert len(list_of_dicts) == 20
 
-def test_Dictionary_value_checker():  #Checks if the final list contains any dictionaries with empty values
+def test_list():  #Checks if the final list contains any dictionaries with empty values
     assert list_check(screen_output) == False
+    assert any(d['Interface'] not in [''] for d in list_of_dicts) == True
+
+def test_dictionary_formation():    #Checks the dictionaries formed properly
+    list_of_dicts, Final_list=read_data(screen_output)
+    assert any(d['S/L'] in ['u/D', 'u/u', 'A/D'] for d in list_of_dicts) == True
 
 list_of_dicts, Final_list=read_data(screen_output)
 print(Final_list)
