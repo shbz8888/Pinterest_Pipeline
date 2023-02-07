@@ -49,30 +49,28 @@ def read_data(screen_output):
             list_of_dicts[idx].update({"Speed/Duplex":n[3]})
         except:
             list_of_dicts[idx].update({"Speed/Duplex":''})
-    Final_list = [x for x in list_of_dicts if not ('' == x.get('Interface'))]    
+    Final_list = [x for x in list_of_dicts if not ('' == x.get('Interface'))]    #Removes 'empty' dictionaries 
     return list_of_dicts,Final_list
-
-
 
 def list_check(screen_output):  #Will be used in tests below
     Initial_list, Final_list=read_data(screen_output)
     for d in Final_list:
         if d['Interface']=='':
-            return True
-    return False  
-
+            return False
+    return True  
 
 def test_regex():    #Checks that the regex statement has cut the lines correctly
     list_of_dicts, Final_list=read_data(screen_output)
     assert len(list_of_dicts) == 20
 
 def test_list():  #Checks if the final list contains any dictionaries with empty values
-    assert list_check(screen_output) == False
-    assert any(d['Interface'] not in [''] for d in list_of_dicts) == True
-
+    assert list_check(screen_output) == True
+    
 def test_dictionary_formation():    #Checks the dictionaries formed properly
     list_of_dicts, Final_list=read_data(screen_output)
-    assert any(d['S/L'] in ['u/D', 'u/u', 'A/D'] for d in list_of_dicts) == True
+    options = ['u/u','u/D','A/D']
+    for d in Final_list:
+        assert d['S/L'] in options
 
 list_of_dicts, Final_list=read_data(screen_output)
 print(Final_list)
