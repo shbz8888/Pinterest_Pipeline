@@ -1,5 +1,5 @@
 # ELT+ETL Pinterest_Pipeline
-A clone of the pipeline used at pinterest. Utilising tools such as APIs, Kafka, Apache Spark, Apache Airflow
+A clone of the pipeline used at pinterest. Utilising tools such as APIs, Kafka, Apache Spark, Apache Airflow to build an ETL + ELT pipeline
 
 Developed an end-to-end data processing pipeline in Python based on Pinterests experiment processing pipeline. 
 Implemented based on Lambda architecture to take advantage of both batch and stream-processing.
