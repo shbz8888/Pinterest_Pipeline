@@ -1,4 +1,4 @@
-# Pinterest_Pipeline
+# ELT+ETL Pinterest_Pipeline
 A clone of the pipeline used at pinterest. Utilising tools such as APIs, Kafka, Apache Spark, Apache Airflow
 
 Developed an end-to-end data processing pipeline in Python based on Pinterests experiment processing pipeline. 
